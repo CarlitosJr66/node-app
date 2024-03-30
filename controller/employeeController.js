@@ -34,3 +34,19 @@ export const fetch = async(req, res) => {
         res.status(500).json({error: "Internal Server Error"})
     }
 }
+
+export const update = async(req, res) => {
+    try {
+        const id = req.params.id
+        const employeeExist = await Employee.findOne({_id:id})
+
+        if(!employeeExist) {
+            return res.status(404).json({message: "Employee not found"})
+        }
+
+        const updateEmployee = await Employee.findByIdAndUpdate(id, req.body, {new: true})
+        res.status(201).json(updateEmployee)
+    } catch (error) {
+        response.stauts(500).json({error: "Internal Server Error"})
+    }
+}
